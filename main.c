@@ -67,5 +67,6 @@ int main()
   printf("解密后的密码为：%s\n", a);
   return 0;
 END:
+  printf("密码中包含非字母字符，无法加密或解密\n");
   return 0;
 }
