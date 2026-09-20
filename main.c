@@ -1,72 +1,72 @@
-﻿// 凯撒移位密码ROT5
+// Morse Code
 #include <stdio.h>
 #include <string.h>
-int lock(char a[], int b)
+int lock(char original[], int b, char lock_result[])
 {
-  for (int i = 0; i < b; i++)
-  {
-    if ((a[i] >= 'a' && a[i] <= 'z') || (a[i] >= 'A' && a[i] <= 'Z'))
-    {
-      if ((a[i] >= 'a' && a[i] + 5 <= 'z') || (a[i] >= 'A' && a[i] + 5 <= 'Z'))
-      {
-        a[i] = a[i] + 5;
-      }
-      else
-      {
-        a[i] = a[i] - 21;
-      }
+    int c = 0;
+    char in[36] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9'};
+    char* out[36] = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--..","-----",".----","..---","...--","....-",".....","-....","--...","---..","----."};
+    for(int i = 0; i < b; i++){
+    if(original[i] >= 'a' && original[i] <= 'z'){
+        original[i] = original[i] - 32;
     }
-    else
-    {
-      return EOF;
-    }
-  }
-  return 0;
-}
-void unlock(char a[], int b)
-{
-  for (int i = 0; i < b; i++)
-  {
-    if (a[i] >= 'a' && a[i] <= 'z')
-    {
+        if((original[i] >= 'A' && original[i] <= 'Z') || (original[i] >= '0' && original[i] <= '9')){
+            for(int j = 0; j < 36; j++){
+                if(original[i] == in[j]){
+                    for(int k = 0; k < strlen(out[j]); k++){
+                        lock_result[c++] = out[j][k];
+                    }
+                    lock_result[c++] = ' ';
+                }
+            }
 
-      if (a[i] - 5 >= 'a')
-      {
-        a[i] = a[i] - 5;
-      }
-      else
-      {
-        a[i] = a[i] + 21;
-      }
+
+        }
+        else{
+            return EOF;
+        }
     }
-    if (a[i] >= 'A' && a[i] <= 'Z')
-    {
-      if (a[i] - 5 >= 'A')
-      {
-        a[i] = a[i] - 5;
-      }
-      else
-      {
-        a[i] = a[i] + 21;
-      }
-    }
-  }
+    return 0;
 }
-int main()
+int unlock(char lock_result[], int b, char unlock_result[])
 {
-  char a[100];
-  printf("请输入密码：");
-  scanf("%s", a);
-  int b = strlen(a);
-  if (lock(a, b) == EOF)
+    int c = 0, d = 0;
+    char in[36] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9'};
+    char* out[36] = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--..","-----",".----","..---","...--","....-",".....","-....","--...","---..","----."};
+      for(int j = 0; j < 36; j++){
+        for(int i = 0; i < strlen(out[j]); i++){
+        if(lock_result[c + i] != out[j][i]){
+            break;
+        }
+
+        if(i == strlen(out[j]) - 1 && (lock_result[c + i + 1] == ' ' || lock_result[c + i + 1] == '\0')){
+            unlock_result[d++] = in[j];
+            c += strlen(out[j]) + 1;
+            j = -1;
+            break;
+        }
+    }
+           if(lock_result[c] == '\0'){
+             break;
+           }
+}
+return 0;
+}
+int main(){
+  char original[100], lock_result[1000] = {}, unlock_result[100] = {};
+  printf("请输入密码：\n");
+  scanf("%s", original);
+  int lock_b = strlen(original);
+  if (lock(original, lock_b, lock_result) == EOF)
   {
     goto END;
   }
-  printf("加密后的密码为：%s\n", a);
-  unlock(a, b);
-  printf("解密后的密码为：%s\n", a);
+  printf("加密后的密码为：%s\n", lock_result);
+  int unlock_b = strlen(lock_result);
+  unlock(lock_result, unlock_b, unlock_result);
+  printf("解密后的密码为：%s\n", unlock_result);
   return 0;
 END:
-  printf("密码中包含非字母字符，无法加密或解密\n");
+  printf("密码中包含非字母或数字，无法加密或解密\n");
   return 0;
 }
