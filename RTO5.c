@@ -1,4 +1,5 @@
-﻿// 凯撒移位密码ROT5
+// 此文件换行符为 LF (Unix)，Git 在 Windows 上会自动转换为 CRLF，不影响使用
+// 凯撒移位密码ROT5
 #include <stdio.h>
 #include <string.h>
 int lock(char a[], int b)
