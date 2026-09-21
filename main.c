@@ -19,8 +19,8 @@ int main()
 
     while (1)
     {
-        printf("\n=== 文本编码与加解密工具 ===\n");
-        printf("1. 凯撒密码\n");
+        printf("\n=== 加密解密工具 ===\n");
+        printf("1. 凯撒密码(仅支持英文字母)\n");
         printf("2. URL 编码\n");
         printf("3. Base64 编码\n");
         printf("4. 摩斯电码\n");
