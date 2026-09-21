@@ -2,20 +2,18 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "Base64.c"
-#include "URL.c"
-#include "Shift5.c"
-#include "Morse Code.c"
+#include "Base64.h"
+#include "URL.h"
+#include "Shift5.h"
+#include "Morse Code.h"
 
 int main()
 {
-    char choice[10] = {};
+    char choice[3] = {};
     int mode = 0;
     char input[1000] = {};
     char result[10000] = {};
-    int len = strlen(input);
     int function = 0;
-
     printf("=== 文本编码与加解密工具 ===\n");
     printf("1. 凯撒密码\n");
     printf("2. URL 编码\n");
@@ -66,6 +64,7 @@ int main()
     input[strcspn(input, "\n")] = '\0';
     printf("模式 (0=加密/编码, 1=解密／解码): ");
     scanf("%d", &function);
+    int len = strlen(input);
     if (function != 0 && function != 1)
     {
         printf("无效选择\n");
@@ -75,19 +74,21 @@ int main()
     switch (mode)
     {
     case 1:
-        if (Shift5_lock(input, len) == EOF)
+        if (function == 0)
+        { 
+            if (Shift5_lock(input, len) == EOF)
         {
             printf("Shift5 仅支持英文字母！\n");
             return 1;
         }
-        if (function == 0)
-        {
-            Shift5_lock(input, len);
-            printf("Shift5 加密: %s\n", result);
+            printf("Shift5 加密: %s\n", input);
         }
         else if (function == 1)
+        { if (Shift5_unlock(input, len) == EOF)
         {
-            Shift5_lock(input, len);
+            printf("Shift5 仅支持英文字母！\n");
+            return 1;
+        }
             printf("Shift5 解密: %s\n", input);
         }
         break;
@@ -112,27 +113,34 @@ int main()
             printf("Base64 编码: %s\n", result);
         }
         else if (function == 1)
+        { 
+            if (Base64_unlock((unsigned char *)input, len, (unsigned char *)result) == EOF)
         {
-            Base64_unlock((unsigned char *)input, len, (unsigned char *)result);
+            printf("Base64 解码中包含不支持的字符或格式错误，无法处理\n");
+            return 1;
+        }
             printf("Base64 解码: %s\n", result);
         }
         break;
 
     case 4:
-        if (Morse_Code_lock(input, len, result) == EOF)
-        {
-            printf("摩斯电码中包含不支持的字符，无法处理！\n");
-            return 1;
-        }
         if (function == 0)
         {
-            Morse_Code_lock(input, len, result);
+            if (Morse_Code_lock(input, len, result) == EOF)
+        {
+            printf("原码中包含不支持的字符，无法处理\n");
+            return 1;
+        }
             printf("摩斯电码编码: %s\n", result);
         }
         else if (function == 1)
+        { 
+            if (Morse_Code_unlock(input, len, result) == EOF)
         {
-            Morse_Code_unlock(input, len, result);
-            printf("摩斯电码解码: %s\n", result);
+            printf("原码中包含不支持的字符或格式错误，无法处理\n");
+            return 1;
+        }
+            printf("原码解码: %s\n", result);
         }
         break;
     }

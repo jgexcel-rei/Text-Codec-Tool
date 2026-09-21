@@ -1,6 +1,7 @@
 // Morse Code
 #include <stdio.h>
 #include <string.h>
+#include "Morse Code.h"
 int Morse_Code_lock(char original[], int b, char lock_result[])
 {
     int c = 0;
@@ -20,7 +21,7 @@ int Morse_Code_lock(char original[], int b, char lock_result[])
                 lock_result[c++] = ' ';
             }
         }
-        if(!found){
+      if(!found){
             return EOF;
         }
     }
@@ -32,7 +33,12 @@ int Morse_Code_unlock(char lock_result[], int b, char unlock_result[])
     int c = 0, d = 0;
     char in[53] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?','!','/','-','+','=',':',';','(',')','&','@','\x27','"','_'};
     char* out[53] = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--..","-----",".----","..---","...--","....-",".....","-....","--...","---..","----.",".-.-.-","--..--","..--..","-.-.--","-..-.","-....-",".-.-.","-...-","---...","-.-.-.","-.--.","-.--.-",".-...",".--.-.",".----.",".-..-.","..--.-"};
-      for(int j = 0; j < 53; j++){
+    for(int i = 0; i < b; i++){
+        if(lock_result[i] != '.' && lock_result[i] != '-' && lock_result[i] != ' '){
+            return EOF;
+        }
+    }
+    for(int j = 0; j < 53; j++){
         for(int i = 0; i < strlen(out[j]); i++){
         if(lock_result[c + i] != out[j][i]){
             break;

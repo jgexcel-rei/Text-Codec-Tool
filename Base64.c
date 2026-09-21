@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "Base64.h"
 int Base64_lock(unsigned char a[], int b, unsigned char lock_result[])
 {
     int c = 0, d = 0;
@@ -62,6 +63,13 @@ int Base64_unlock(unsigned char a[], int b, unsigned char unlock_result[])
         else if (a[i] == '/')
         {
             p[i] = 63;
+        }
+        else if (a[i] == '=')
+        {
+            p[i] = 0;
+        }
+        else{
+            return EOF;
         }
     }
     while (d < b)

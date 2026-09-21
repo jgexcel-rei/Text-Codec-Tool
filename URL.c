@@ -1,5 +1,6 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <string.h>
+#include "URL.h"
 int URL_lock(char a[], int b, char lock_result[])
 {
   int c = 0;
