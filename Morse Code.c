@@ -24,6 +24,7 @@ int lock(char original[], int b, char lock_result[])
             return EOF;
         }
     }
+    lock_result[c] = '\0';
     return 0;
 }
 int unlock(char lock_result[], int b, char unlock_result[])
@@ -48,12 +49,14 @@ int unlock(char lock_result[], int b, char unlock_result[])
              break;
            }
 }
+unlock_result[d] = '\0';
 return 0;
 }
 int main(){
-  char original[100], lock_result[1000] = {}, unlock_result[100] = {};
+  char original[1000] = {}, lock_result[10000] = {}, unlock_result[1000] = {};
   printf("请输入密码：");
-  scanf("%s", original);
+  fgets(original, sizeof(original), stdin);
+  original[strcspn(original, "\n")] = '\0';
   int lock_b = strlen(original);
   if (lock(original, lock_b, lock_result) == EOF)
   {

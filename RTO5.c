@@ -21,6 +21,7 @@ int lock(char a[], int b)
       return EOF;
     }
   }
+  a[b] = '\0';
   return 0;
 }
 void unlock(char a[], int b)
@@ -51,12 +52,14 @@ void unlock(char a[], int b)
       }
     }
   }
+  a[b] = '\0';
 }
 int main()
 {
-  char a[100];
+  char a[1000];
   printf("请输入密码：");
-  scanf("%s", a);
+  fgets(a, sizeof(a), stdin);
+  a[strcspn(a, "\n")] = '\0';
   int b = strlen(a);
   if (lock(a, b) == EOF)
   {

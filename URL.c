@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <string.h>
 int lock(char a[], int b, char lock_result[])
 {
@@ -16,20 +16,63 @@ int lock(char a[], int b, char lock_result[])
       c += 3;
     }
   }
+  lock_result[c] = '\0';
   return 0;
 }
-int unlock(char a[], int b)
+int unlock(char a[], int b, char unlock_result[])
 {
+  int c = 0;
+  for (int i = 0; i < b; i++)
+  {
+    if (a[i] == '%' && i + 2 < b)
+    {
+      int j, k;
+      if (a[i + 1] >= '0' && a[i + 1] <= '9')
+        j = a[i + 1] - '0';
+      else if (a[i + 1] >= 'A' && a[i + 1] <= 'F')
+        j = a[i + 1] - 'A' + 10;
+      else if (a[i + 1] >= 'a' && a[i + 1] <= 'f')
+        j = a[i + 1] - 'a' + 10;
+      else
+      {
+        unlock_result[c++] = a[i];
+        continue;
+      }
+
+      if (a[i + 2] >= '0' && a[i + 2] <= '9')
+        k = a[i + 2] - '0';
+      else if (a[i + 2] >= 'A' && a[i + 2] <= 'F')
+        k = a[i + 2] - 'A' + 10;
+      else if (a[i + 2] >= 'a' && a[i + 2] <= 'f')
+        k = a[i + 2] - 'a' + 10;
+      else
+      {
+        unlock_result[c++] = a[i];
+        continue;
+      }
+
+      unlock_result[c++] = (j << 4) | k;
+      i += 2;
+    }
+    else
+    {
+      unlock_result[c++] = a[i];
+    }
+  }
+  unlock_result[c] = '\0';
+  return c;
 }
 int main()
 {
-  char original[100] = {},lock_result[100] = {0},unlock_result[100] = {0};
+  char original[100] = {0}, lock_result[301] = {0}, unlock_result[301] = {0};
   printf("请输入密码：");
   fgets(original, sizeof(original), stdin);
-  original[strcspn(original, "\n")] = '\0';//也可以使用scanf("%[^\n]s", original);
+  original[strcspn(original, "\n")] = '\0'; // 也可以使用scanf("%[^\n]s", original);
   int b = strlen(original);
   lock(original, b, lock_result);
   printf("加密后的密码为：%s\n", lock_result);
+  int c = strlen(lock_result);
+  unlock(lock_result, c, unlock_result);
+  printf("解密后的密码为：%s\n", unlock_result);
   return 0;
-
 }
