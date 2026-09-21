@@ -1,7 +1,7 @@
-// 凯撒移位密码ROT5
+// 凯撒移位密码Shift
 #include <stdio.h>
 #include <string.h>
-int lock(char a[], int b)
+int Shift5_lock(char a[], int b)
 {
   for (int i = 0; i < b; i++)
   {
@@ -24,7 +24,7 @@ int lock(char a[], int b)
   a[b] = '\0';
   return 0;
 }
-void unlock(char a[], int b)
+void Shift5_unlock(char a[], int b)
 {
   for (int i = 0; i < b; i++)
   {
@@ -53,23 +53,4 @@ void unlock(char a[], int b)
     }
   }
   a[b] = '\0';
-}
-int main()
-{
-  char a[1000];
-  printf("请输入密码：");
-  fgets(a, sizeof(a), stdin);
-  a[strcspn(a, "\n")] = '\0';
-  int b = strlen(a);
-  if (lock(a, b) == EOF)
-  {
-    goto END;
-  }
-  printf("加密后的密码为：%s\n", a);
-  unlock(a, b);
-  printf("解密后的密码为：%s\n", a);
-  return 0;
-END:
-  printf("密码中包含非字母字符，无法加密或解密\n");
-  return 0;
 }

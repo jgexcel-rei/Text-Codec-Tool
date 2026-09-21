@@ -1,7 +1,7 @@
 // Morse Code
 #include <stdio.h>
 #include <string.h>
-int lock(char original[], int b, char lock_result[])
+int Morse_Code_lock(char original[], int b, char lock_result[])
 {
     int c = 0;
     char in[53] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?','!','/','-','+','=',':',';','(',')','&','@','\x27','"','_'};
@@ -27,7 +27,7 @@ int lock(char original[], int b, char lock_result[])
     lock_result[c] = '\0';
     return 0;
 }
-int unlock(char lock_result[], int b, char unlock_result[])
+int Morse_Code_unlock(char lock_result[], int b, char unlock_result[])
 {
     int c = 0, d = 0;
     char in[53] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?','!','/','-','+','=',':',';','(',')','&','@','\x27','"','_'};
@@ -51,23 +51,4 @@ int unlock(char lock_result[], int b, char unlock_result[])
 }
 unlock_result[d] = '\0';
 return 0;
-}
-int main(){
-  char original[1000] = {}, lock_result[10000] = {}, unlock_result[1000] = {};
-  printf("请输入密码：");
-  fgets(original, sizeof(original), stdin);
-  original[strcspn(original, "\n")] = '\0';
-  int lock_b = strlen(original);
-  if (lock(original, lock_b, lock_result) == EOF)
-  {
-    goto END;
-  }
-  printf("加密后的密码为：%s\n", lock_result);
-  int unlock_b = strlen(lock_result);
-  unlock(lock_result, unlock_b, unlock_result);
-  printf("解密后的密码为：%s\n", unlock_result);
-  return 0;
-END:
-  printf("密码中包含不支持的字符，无法加密或解密\n");
-  return 0;
 }

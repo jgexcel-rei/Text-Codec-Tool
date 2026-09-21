@@ -1,6 +1,6 @@
 ﻿#include <stdio.h>
 #include <string.h>
-int lock(char a[], int b, char lock_result[])
+int URL_lock(char a[], int b, char lock_result[])
 {
   int c = 0;
   for (int i = 0; i < b; i++)
@@ -19,7 +19,7 @@ int lock(char a[], int b, char lock_result[])
   lock_result[c] = '\0';
   return 0;
 }
-int unlock(char a[], int b, char unlock_result[])
+int URL_unlock(char a[], int b, char unlock_result[])
 {
   int c = 0;
   for (int i = 0; i < b; i++)
@@ -62,17 +62,4 @@ int unlock(char a[], int b, char unlock_result[])
   unlock_result[c] = '\0';
   return c;
 }
-int main()
-{
-  char original[100] = {0}, lock_result[301] = {0}, unlock_result[301] = {0};
-  printf("请输入密码：");
-  fgets(original, sizeof(original), stdin);
-  original[strcspn(original, "\n")] = '\0'; // 也可以使用scanf("%[^\n]s", original);
-  int b = strlen(original);
-  lock(original, b, lock_result);
-  printf("加密后的密码为：%s\n", lock_result);
-  int c = strlen(lock_result);
-  unlock(lock_result, c, unlock_result);
-  printf("解密后的密码为：%s\n", unlock_result);
-  return 0;
-}
+

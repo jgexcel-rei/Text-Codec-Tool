@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-int lock(unsigned char a[], int b, unsigned char lock_result[])
+int Base64_lock(unsigned char a[], int b, unsigned char lock_result[])
 {
     int c = 0, d = 0;
     unsigned char base64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -37,7 +37,7 @@ int lock(unsigned char a[], int b, unsigned char lock_result[])
     lock_result[c] = '\0';
     return 0;
 }
-int unlock(unsigned char a[], int b, unsigned char unlock_result[])
+int Base64_unlock(unsigned char a[], int b, unsigned char unlock_result[])
 {
     int c = 0, d = 0;
     int p[1000] = {};
@@ -88,19 +88,5 @@ int unlock(unsigned char a[], int b, unsigned char unlock_result[])
         d += 4;
     }
     unlock_result[c] = '\0';
-    return 0;
-}
-int main()
-{
-    unsigned char original[1000] = {}, lock_result[1000] = {}, unlock_result[1000] = {};
-    printf("请输入密码：");
-    fgets(original, sizeof(original), stdin);
-    original[strcspn(original, "\n")] = '\0';
-    int lock_b = strlen(original);
-    lock(original, lock_b, lock_result);
-    printf("加密后的密码为：%s\n", lock_result);
-    int unlock_b = strlen(lock_result);
-    unlock(lock_result, unlock_b, unlock_result);
-    printf("解密后的密码为：%s\n", unlock_result);
     return 0;
 }
